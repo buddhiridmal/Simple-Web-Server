@@ -23,7 +23,10 @@ public class ServerApp {
                     BufferedReader br = new BufferedReader(isr);
 
                     String commandLine = br.readLine();
-
+                    if (commandLine == null) return;
+                    String[] cmdArray = commandLine.split(" ");
+                    String command = cmdArray[0];
+                    String resourcePath = cmdArray[1];
 
 
 
