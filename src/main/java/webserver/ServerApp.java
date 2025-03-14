@@ -3,6 +3,8 @@ package webserver;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -120,41 +122,27 @@ public class ServerApp {
                             os.write(httpResponseBody.getBytes());
                             os.flush();
                         }
+                        else{
+                            String httpResponseHead = """
+                                HTTP/1.1 200 OK
+                                Server: WEB-server
+                                Date: %s
+                                Content-Type: %s
+                                
+                                """.formatted(LocalDateTime.now(), Files.probeContentType(path));
+                            os.write(httpResponseHead.getBytes());
+                            os.flush();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            FileChannel fc = FileChannel.open(path);
+                            ByteBuffer buffer = ByteBuffer.allocate(1024);
+                            while (fc.read(buffer) != -1){
+                                buffer.flip();
+                                os.write(buffer.array(), 0, buffer.limit());
+                            }
+                            fc.close();
+                            os.flush();
+                        }
                     }
-
 
                 }catch (IOException e) {}
 
