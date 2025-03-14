@@ -52,10 +52,36 @@ public class ServerApp {
                                 </head>
                                 <body>
                                     <h1>405 Method Not Allowed </h1>
-                                    <h2>DEP Server does not support %s method.</h2>
+                                    <h2>Server does not support %s method.</h2>
                                 </body>
                                 </html>
                                 """.formatted(command);
+                        os.write(httpResponseBody.getBytes());
+                        os.flush();
+                    }
+
+                    else if (host == null){
+                        String httpResponseHead = """
+                                HTTP/1.1 400 Bad Request
+                                Server: Simple-web-server-Buddhi
+                                Date: %s
+                                Content-Type: text/html
+                                
+                                """.formatted(LocalDateTime.now());
+                        os.write(httpResponseHead.getBytes());
+                        os.flush();
+                        String httpResponseBody = """
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                <title>WEB Server | 400 Bad Request</title>
+                                </head>
+                                <body>
+                                    <h1>400 Bad Request</h1>
+                                    <h2>Invalid Request,  Server is not a dedicated web server.</h2>
+                                </body>
+                                </html>
+                                """;
                         os.write(httpResponseBody.getBytes());
                         os.flush();
                     }
