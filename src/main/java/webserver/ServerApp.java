@@ -1,6 +1,9 @@
 package webserver;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,6 +15,34 @@ public class ServerApp {
         while (true) {
             Socket localsocket = serverSocket.accept();
             System.out.println("Accepted connection from " + localsocket.getRemoteSocketAddress());
+
+            new Thread(()->{
+                try {
+                    InputStream is = localsocket.getInputStream();
+                    InputStreamReader isr = new InputStreamReader(is);
+                    BufferedReader br = new BufferedReader(isr);
+
+                    String commandLine = br.readLine();
+
+
+
+
+
+
+                }catch (IOException e) {}
+
+
+
+
+
+            }).start();
+
+
+
+
+
+
+
 
         }
     }
