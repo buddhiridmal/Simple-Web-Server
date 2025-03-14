@@ -3,6 +3,8 @@ package webserver;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 public class ServerApp {
@@ -84,6 +86,73 @@ public class ServerApp {
                                 """;
                         os.write(httpResponseBody.getBytes());
                         os.flush();
+                    }else {
+                        Path path;
+
+                        if (resourcePath.equals("/")){
+                            path = Path.of("http", host, "index.html");
+                        }else{
+                            path = Path.of("http", host, resourcePath);
+                        }
+
+                        if (!Files.exists(path)){
+                            String httpResponseHead = """
+                                HTTP/1.1 404 Not Found
+                                Server: WEB-server
+                                Date: %s
+                                Content-Type: text/html
+                                
+                                """.formatted(LocalDateTime.now());
+                            os.write(httpResponseHead.getBytes());
+                            os.flush();
+                            String httpResponseBody = """
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                <title>WEB Server | 404 Not Found</title>
+                                </head>
+                                <body>
+                                    <h1>404 Not Found</h1>
+                                    <h2>Requested resource: %s not found</h2>
+                                </body>
+                                </html>
+                                """.formatted(resourcePath);
+                            os.write(httpResponseBody.getBytes());
+                            os.flush();
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     }
 
 
