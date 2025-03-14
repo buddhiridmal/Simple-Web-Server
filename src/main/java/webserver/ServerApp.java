@@ -28,7 +28,13 @@ public class ServerApp {
                     String command = cmdArray[0];
                     String resourcePath = cmdArray[1];
 
-
+                    String host = null;
+                    String line;
+                    while ((line = br.readLine()) != null && !line.isBlank()) {
+                        String header = line.split(":")[0].strip();
+                        String value = line.substring(line.indexOf(":") + 1).strip();
+                        if (header.equalsIgnoreCase("Host")) host = value;
+                    }
 
 
 
